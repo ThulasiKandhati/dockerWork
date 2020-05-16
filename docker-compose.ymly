@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+    redis:
+        container_name: exl_redis
+        image: redis:latest
+        volumes: 
+            - ../redis:/data
+        restart: always
+    mysql: 
+        container_name: exl_mysql
+        image: mysql:latest
+        environment: 
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - ../mysql:/var/lib/mysql
+        restart: always
+

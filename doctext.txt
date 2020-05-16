@@ -1,0 +1,78 @@
+#run the python file.
+docker run \
+--rm \
+-v $(pwd):/src \
+python:3 \
+python /src/1.py
+
+#run python interpreter it interactive 
+docker run \
+--rm \
+-it \
+-v $(pwd):/src \
+python:3 \
+python
+
+#open a shell in the container
+docker run \
+--rm  \
+-it  \
+-v $(pwd):/src \
+python:3 \
+/bin/bash 
+
+#create a file with Dockerfile
+FROM python:3
+RUN pip3 install numpy
+
+#buid custom image
+docker build \
+-t python_numpy \
+.
+
+#run file
+docker run \
+--rm \
+-v $(pwd):/src python_numpy \
+python /src/1.py
+
+#run python interpreter it interactive
+docker run \
+--rm \
+-it \
+-v $(pwd):/src \
+python_numpy \
+python
+
+#start container in foreground
+docker run \
+--rm \
+-v $(pwd):/Users/thulasikandhati/work/ngnix \
+-p 8080:80 \
+ngnix:latest
+
+#start container in background
+docker run \
+--rm \
+-d \
+-v $(pwd):/Users/thulasikandhati/work/ngnix \
+-p 8080:80 \
+ngnix:latest
+
+#create a network to allow sharing between 2 containers.
+docker network create multiple
+
+# create mysql container
+# -d is the runs in the background --rm removes the image -v volume  
+docker run \
+-- rm \
+-d \
+--net multiple
+--name mul_mysql \
+-e MYSQL_ROOT_PASSWORD='root' \
+mysql:latest
+
+
+docker run --rm -d --net multiple --name  mul-mysql -v $(pwd):/var/lib/mysql -e MYSQL_ROOT_PASSWORD='root@123' mysql:latest
+
+docker run --rm -it --net multiple --name mul_node node:8 /bin/bash
